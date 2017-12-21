@@ -9,6 +9,6 @@ convertToFruit "o" = Orange
 
 main :: IO ()
 main = getArgs 
-       >>= return . map convertToFruit 
+       >>= return . map convertToFruit
        >>= return . checkoutPromotions
        >>= print 
