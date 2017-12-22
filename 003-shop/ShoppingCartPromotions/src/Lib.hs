@@ -21,7 +21,7 @@ countFruits fruits =
   in fromListWith (+) mapped
 
 sumUp :: Map Fruit Integer -> Integer
-sumUp = foldlWithKey (\acc f n -> acc + n * (price f)) 0
+sumUp = sum . mapWithKey (\f n -> n * price f)
 
 promotion :: Fruit -> Integer -> Integer
 promotion Apple c = (c `div` 2) + (c `rem` 2)
