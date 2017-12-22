@@ -4,6 +4,7 @@ module Lib
 
 someFunc :: IO ()
 someFunc = do
-	putStrLn "Hello, what is your name?"
-	name <- getLine
-	putStrLn $ "Nice to meet you " ++ name
+  putStrLn "Hello, what is your name?"
+  name <- getLine
+  putStrLn $ "Nice to meet you " ++ name
+
