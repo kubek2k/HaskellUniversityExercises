@@ -26,7 +26,7 @@ tokenize = words
 parse :: [String] -> [Token]
 parse = map read
 
-interpret :: [Token] -> Float
+interpret :: [Token] -> Maybe Float
 interpret tokens = interpretInternal tokens []
   where
     interpretInternal (Operand f:rest) stack =
@@ -41,4 +41,6 @@ interpret tokens = interpretInternal tokens []
       in interpretInternal
            rest
            (operation stackTailHead stackHead : stackTailTail)
-    interpretInternal [] (stackHead:_) = stackHead
+    interpretInternal (Operator _:_) [_] = Nothing
+    interpretInternal [] [stackHead] = Just stackHead
+    interpretInternal [] _ = Nothing
