@@ -1,5 +1,5 @@
 module Lib
-  ( parse
+  ( process
   ) where
 
 data OperatorType
@@ -41,6 +41,9 @@ interpret tokens = interpretInternal tokens []
       in interpretInternal
            rest
            (operation stackTailHead stackHead : stackTailTail)
-    interpretInternal (Operator _:_) [_] = Nothing
+    interpretInternal (Operator _:_) _ = Nothing
     interpretInternal [] [stackHead] = Just stackHead
     interpretInternal [] _ = Nothing
+
+process :: String -> Maybe Float
+process = interpret . parse . tokenize
