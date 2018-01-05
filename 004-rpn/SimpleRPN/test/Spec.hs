@@ -19,6 +19,13 @@ genRandomRPN =
          vectorOf n $ frequency [(2, genRandomFloat), (1, genRandomOperator)]
        return $ intercalate " " randomStrings)
 
+prop_processDoesntFail :: Property
+prop_processDoesntFail =
+  forAll genRandomRPN $ \rpn ->
+    case process rpn of
+      (Just _) -> True
+      Nothing -> True
+
 genProperRPN :: Gen String
 genProperRPN =
   let genRandomFloatSingletonList = genRandomFloat >>= return . (: [])
@@ -33,13 +40,6 @@ genProperRPN =
             operator <- genRandomOperator >>= return . (: [])
             return $ concat [operand1, operand2, operator]
   in sized $ \n -> genRPNRecursively n >>= return . intercalate " "
-
-prop_processDoesntFail :: Property
-prop_processDoesntFail =
-  forAll genRandomRPN $ \rpn ->
-    case process rpn of
-      (Just _) -> True
-      Nothing -> True
 
 prop_processSucceedsForProperRPN :: Property
 prop_processSucceedsForProperRPN =
