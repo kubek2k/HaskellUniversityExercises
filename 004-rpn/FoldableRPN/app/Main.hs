@@ -1,7 +1,12 @@
 module Main where
 
+import Control.Monad
 import Lib
 
-main = do
-  line <- getLine
-  print (process line)
+interactingFunction :: String -> String
+interactingFunction s =
+  case process s of
+    Just f -> show f
+    Nothing -> "Can't process '" ++ s ++ "'"
+
+main = interact $ unlines . map interactingFunction . lines
