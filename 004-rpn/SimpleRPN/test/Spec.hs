@@ -32,13 +32,14 @@ genProperRPN =
       genRPNRecursively n =
         if (n == 0)
           then genRandomFloatSingletonList
-          else do
-            operand1 <-
-              oneof [genRPNRecursively (n - 1), genRandomFloatSingletonList]
-            operand2 <-
-              oneof [genRPNRecursively (n - 1), genRandomFloatSingletonList]
-            operator <- genRandomOperator >>= return . (: [])
-            return $ concat [operand1, operand2, operator]
+          else fmap concat $
+               sequence
+                 [ oneof
+                     [genRPNRecursively (n - 1), genRandomFloatSingletonList]
+                 , oneof
+                     [genRPNRecursively (n - 1), genRandomFloatSingletonList]
+                 , genRandomOperator >>= return . (: [])
+                 ]
   in sized $ \n -> genRPNRecursively n >>= return . intercalate " "
 
 prop_processSucceedsForProperRPN :: Property
