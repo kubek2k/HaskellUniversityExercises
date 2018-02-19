@@ -1,6 +1,5 @@
 module Main where
 
-import Control.Monad
 import Lib
 
 interactingFunction :: String -> String
@@ -9,4 +8,5 @@ interactingFunction s =
     Just f -> show f
     Nothing -> "Can't process '" ++ s ++ "'"
 
+main :: IO ()
 main = interact $ unlines . map interactingFunction . lines

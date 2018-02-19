@@ -32,6 +32,7 @@ instance Read Token where
   readsPrec _ "*" = [(Operator Multiply, "")]
   readsPrec _ s = [(fromJust((readVariableRef s) <|> (readMaybe s)), "")]
 
+tokenize :: String -> [String]
 tokenize = words
 
 parse :: [String] -> Maybe [Token]
@@ -42,15 +43,15 @@ interpret tokens = resultingStack >>= return . head
   where
     foldingFunction Nothing _ = Nothing
     foldingFunction (Just stack) (Operand f) = Just (f : stack)
-    foldingFunction (Just stack) (VariableRef x) = Just (1.0 : stack)
-    foldingFunction (Just (x:y:tail)) (Operator o) =
+    foldingFunction (Just stack) (VariableRef _) = Just (1.0 : stack)
+    foldingFunction (Just (x:y:rest)) (Operator o) =
       let operation =
             case o of
               Plus -> (+)
               Minus -> (-)
               Divide -> (/)
               Multiply -> (*)
-      in Just (operation x y : tail)
+      in Just (operation x y : rest)
     foldingFunction _ (Operator _) = Nothing
     resultingStack = foldl foldingFunction (Just []) tokens
 
