@@ -6,8 +6,8 @@ module Lib
 
 import Data.Map (Map, foldlWithKey, fromListWith, mapWithKey)
 
-data Fruit
-  = Apple
+data Fruit { price :: Integer} 
+  = Apple 
   | Orange
   deriving (Eq, Ord, Show)
 
